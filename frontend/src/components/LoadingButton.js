@@ -1,4 +1,3 @@
-import React from 'react';
 
 const LoadingButton = ({ isLoading, onClick, disabled, children, className }) => {
   return (
