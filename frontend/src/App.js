@@ -1,37 +1,22 @@
-import { useEffect, useState } from "react";
+import React from "react";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route
+} from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Home from "./components/Home";
+import Marketplace from "./components/Marketplace";
 
 function App() {
-  const [message, setMessage] = useState("");
-
-  // // 🔹 Test connection to backend
-  // useEffect(() => {
-  //   fetch("/api/message")
-  //     .then((res) => {
-  //       if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
-  //       return res.json();
-  //     })
-  //     .then((data) => setMessage(data.text))
-  //     .catch((error) => {
-  //       console.error("Error fetching data:", error);
-  //       setMessage("Failed to load message from backend 😢");
-  //     });
-  // }, []);
-
   return (
-    <div>
-      {/* 🌿 Navbar at top */}
+    <Router>
       <Navbar />
-
-      {/* 🏠 Home page (mission + chatbot) */}
-      <Home />
-
-      {/* ⚙️ Backend connectivity status at bottom
-      <div style={{ textAlign: "center", margin: "3rem 0", color: "gray" }}>
-        <p>🔌 Backend Status: {message || "Loading..."}</p>
-      </div> */}
-    </div>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/marketplace" element={<Marketplace />} />
+      </Routes>
+    </Router>
   );
 }
 
@@ -39,6 +24,54 @@ export default App;
 
 
 
+
+//////////////////////////1st Pull part////////////
+// import { useEffect, useState } from "react";
+// import Navbar from "./components/Navbar";
+// import Home from "./components/Home";
+
+// function App() {
+//   const [message, setMessage] = useState("");
+
+//   // // 🔹 Test connection to backend
+//   // useEffect(() => {
+//   //   fetch("/api/message")
+//   //     .then((res) => {
+//   //       if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
+//   //       return res.json();
+//   //     })
+//   //     .then((data) => setMessage(data.text))
+//   //     .catch((error) => {
+//   //       console.error("Error fetching data:", error);
+//   //       setMessage("Failed to load message from backend 😢");
+//   //     });
+//   // }, []);
+
+//   return (
+//     <div>
+//       {/* 🌿 Navbar at top */}
+//       <Navbar />
+
+//       {/* 🏠 Home page (mission + chatbot) */}
+//       <Home />
+
+//       {/* ⚙️ Backend connectivity status at bottom
+//       <div style={{ textAlign: "center", margin: "3rem 0", color: "gray" }}>
+//         <p>🔌 Backend Status: {message || "Loading..."}</p>
+//       </div> */}
+      
+//       <Route path="/marketplace" element={<Marketplace />} />
+
+//     </div>
+//   );
+// }
+
+// export default App;
+
+
+
+
+////////////////////////older 
 // import { useEffect, useState } from "react";
 
 // function App() {
