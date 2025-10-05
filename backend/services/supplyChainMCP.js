@@ -228,30 +228,192 @@ class SupplyChainMCPService {
 
     console.log(`🔍 Finding alternatives for: "${desc}"`);
 
-    // Keyword → category map
-    const keywordCategoryMap = [
-      { keywords: ['paper','folder','notebook'], categories: ['office_supplies'] },
-      { keywords: ['towel'], categories: ['janitorial'] },
-      { keywords: ['pen'], categories: ['office_supplies'] },
-      { keywords: ['cleaner','cleaning','solution'], categories: ['janitorial'] },
-      { keywords: ['ethernet','cat6','network cable'], categories: ['it_hardware'] },
-      { keywords: ['thermal paste','thermal'], categories: ['it_hardware'] },
-      { keywords: ['label'], categories: ['it_supplies'] },
-      { keywords: ['wrist','anti static','esd'], categories: ['it_hardware'] }
-    ];
-
-    for (const entry of keywordCategoryMap) {
-      if (entry.keywords.some(k => desc.includes(k))) {
-        matchedProducts = this.products.filter(p => entry.categories.includes(p.category));
-        console.log(`🗂️ Category match (${entry.categories.join(', ')}): ${matchedProducts.length} products`);
-        break;
-      }
+    // First check for specific mock alternatives before using category matching
+    if (desc.includes('sticky') || desc.includes('post-it')) {
+      matchedProducts = [
+        {
+          sku: "STICKY-STD-ASST",
+          name: "Sticky Notes Assorted Colors",
+          price: 8.50,
+          category: "office_supplies",
+          certs: [],
+          recycled_pct: 0,
+          co2e_per_unit: 0.15,
+          lead_time_days: 1,
+          moq: 12
+        },
+        {
+          sku: "STICKY-RCY-ASST",
+          name: "Sticky Notes Recycled Paper",
+          price: 9.75,
+          category: "office_supplies",
+          certs: ["Recycled Content"],
+          recycled_pct: 30,
+          co2e_per_unit: 0.12,
+          lead_time_days: 2,
+          moq: 12
+        }
+      ];
+      console.log(`🆕 Created ${matchedProducts.length} mock alternatives for sticky notes`);
+    } else if (desc.includes('usb') || desc.includes('flash drive')) {
+      matchedProducts = [
+        {
+          sku: "USB-STD-32GB",
+          name: "USB Flash Drive 32GB Standard",
+          price: 12.00,
+          category: "electronics",
+          certs: [],
+          recycled_pct: 0,
+          co2e_per_unit: 1.20,
+          lead_time_days: 3,
+          moq: 10
+        },
+        {
+          sku: "USB-ECO-32GB",
+          name: "USB Flash Drive 32GB Bamboo Case",
+          price: 18.00,
+          category: "electronics",
+          certs: ["Sustainable Materials"],
+          recycled_pct: 45,
+          co2e_per_unit: 0.85,
+          lead_time_days: 7,
+          moq: 10
+        }
+      ];
+      console.log(`🆕 Created ${matchedProducts.length} mock alternatives for USB drives`);
+    } else if (desc.includes('poster tube') || desc.includes('tube')) {
+      matchedProducts = [
+        {
+          sku: "TUBE-STD-37IN",
+          name: "Poster Tube 37 inch Standard",
+          price: 6.50,
+          category: "packaging",
+          certs: [],
+          recycled_pct: 0,
+          co2e_per_unit: 0.35,
+          lead_time_days: 2,
+          moq: 10
+        },
+        {
+          sku: "TUBE-RCY-37IN",
+          name: "Poster Tube 37 inch Recycled",
+          price: 7.25,
+          category: "packaging",
+          certs: ["Recycled Content"],
+          recycled_pct: 90,
+          co2e_per_unit: 0.22,
+          lead_time_days: 3,
+          moq: 10
+        }
+      ];
+      console.log(`🆕 Created ${matchedProducts.length} mock alternatives for poster tubes`);
+    } else if (desc.includes('business card') || desc.includes('card')) {
+      matchedProducts = [
+        {
+          sku: "CARD-STD-16PT",
+          name: "Business Cards 16pt Standard",
+          price: 0.12,
+          category: "office_supplies",
+          certs: [],
+          recycled_pct: 0,
+          co2e_per_unit: 0.05,
+          lead_time_days: 5,
+          moq: 500
+        },
+        {
+          sku: "CARD-RCY-16PT",
+          name: "Business Cards 16pt Recycled",
+          price: 0.14,
+          category: "office_supplies",
+          certs: ["FSC Recycled"],
+          recycled_pct: 100,
+          co2e_per_unit: 0.03,
+          lead_time_days: 7,
+          moq: 500
+        }
+      ];
+      console.log(`🆕 Created ${matchedProducts.length} mock alternatives for business cards`);
+    } else if (desc.includes('banner') || desc.includes('display')) {
+      matchedProducts = [
+        {
+          sku: "BANNER-STD-33X79",
+          name: "Retractable Banner 33x79 Standard",
+          price: 95.00,
+          category: "marketing",
+          certs: [],
+          recycled_pct: 0,
+          co2e_per_unit: 2.50,
+          lead_time_days: 7,
+          moq: 1
+        },
+        {
+          sku: "BANNER-ECO-33X79",
+          name: "Retractable Banner 33x79 Eco-Fabric",
+          price: 120.00,
+          category: "marketing",
+          certs: ["Recycled Content", "Low Carbon"],
+          recycled_pct: 60,
+          co2e_per_unit: 1.40,
+          lead_time_days: 10,
+          moq: 1
+        }
+      ];
+      console.log(`🆕 Created ${matchedProducts.length} mock alternatives for banners`);
+    } else if (desc.includes('whiteboard') || desc.includes('cleaner spray')) {
+      matchedProducts = [
+        {
+          sku: "CLEAN-WB-STD",
+          name: "Whiteboard Cleaner Spray Standard",
+          price: 5.50,
+          category: "office_supplies",
+          certs: [],
+          recycled_pct: 0,
+          co2e_per_unit: 0.35,
+          lead_time_days: 2,
+          moq: 12
+        },
+        {
+          sku: "CLEAN-WB-ECO",
+          name: "Whiteboard Cleaner Spray Eco-Formula",
+          price: 6.50,
+          category: "office_supplies",
+          certs: ["Post-Consumer Recycled"],
+          recycled_pct: 90,
+          co2e_per_unit: 0.45,
+          lead_time_days: 5,
+          moq: 12
+        }
+      ];
+      console.log(`🆕 Created ${matchedProducts.length} mock alternatives for whiteboard cleaner`);
     }
 
-    // Narrow further by keyword in product name to improve relevance
-    if (matchedProducts.length > 0) {
-      const nameFiltered = matchedProducts.filter(p => p.name.toLowerCase().includes(desc.split(' ')[0]));
-      if (nameFiltered.length > 0) matchedProducts = nameFiltered;
+    // Only try keyword-based category matching if no specific matches found above
+    if (matchedProducts.length === 0) {
+      // Keyword → category map
+      const keywordCategoryMap = [
+        { keywords: ['paper','folder','notebook'], categories: ['office_supplies'] },
+        { keywords: ['towel'], categories: ['janitorial'] },
+        { keywords: ['pen'], categories: ['office_supplies'] },
+        { keywords: ['cleaner','cleaning','solution'], categories: ['janitorial'] },
+        { keywords: ['ethernet','cat6','network cable'], categories: ['it_hardware'] },
+        { keywords: ['thermal paste','thermal'], categories: ['it_hardware'] },
+        { keywords: ['label'], categories: ['it_supplies'] },
+        { keywords: ['wrist','anti static','esd'], categories: ['it_hardware'] }
+      ];
+
+      for (const entry of keywordCategoryMap) {
+        if (entry.keywords.some(k => desc.includes(k))) {
+          matchedProducts = this.products.filter(p => entry.categories.includes(p.category));
+          console.log(`🗂️ Category match (${entry.categories.join(', ')}): ${matchedProducts.length} products`);
+          break;
+        }
+      }
+
+      // Narrow further by keyword in product name to improve relevance
+      if (matchedProducts.length > 0) {
+        const nameFiltered = matchedProducts.filter(p => p.name.toLowerCase().includes(desc.split(' ')[0]));
+        if (nameFiltered.length > 0) matchedProducts = nameFiltered;
+      }
     }
 
     if (matchedProducts.length === 0) {
@@ -333,7 +495,7 @@ class SupplyChainMCPService {
             moq: 12
           }
         ];
-      } else if (desc.includes('notebook') || desc.includes('note')) {
+      } else if (desc.includes('notebook') || desc.includes('note') && !desc.includes('sticky')) {
         matchedProducts = [
           {
             sku: "NOTE-STD-SPIRAL",
@@ -356,156 +518,6 @@ class SupplyChainMCPService {
             co2e_per_unit: 0.30,
             lead_time_days: 3,
             moq: 25
-          }
-        ];
-      } else if (desc.includes('sticky') || desc.includes('post-it') || desc.includes('notes')) {
-        matchedProducts = [
-          {
-            sku: "STICKY-STD-ASST",
-            name: "Sticky Notes Assorted Colors",
-            price: 8.50,
-            category: "office_supplies",
-            certs: [],
-            recycled_pct: 0,
-            co2e_per_unit: 0.15,
-            lead_time_days: 1,
-            moq: 12
-          },
-          {
-            sku: "STICKY-RCY-ASST",
-            name: "Sticky Notes Recycled Paper",
-            price: 9.75,
-            category: "office_supplies",
-            certs: ["Recycled Content"],
-            recycled_pct: 30,
-            co2e_per_unit: 0.12,
-            lead_time_days: 2,
-            moq: 12
-          }
-        ];
-      } else if (desc.includes('usb') || desc.includes('flash drive')) {
-        matchedProducts = [
-          {
-            sku: "USB-STD-32GB",
-            name: "USB Flash Drive 32GB Standard",
-            price: 12.00,
-            category: "electronics",
-            certs: [],
-            recycled_pct: 0,
-            co2e_per_unit: 1.20,
-            lead_time_days: 3,
-            moq: 10
-          },
-          {
-            sku: "USB-ECO-32GB",
-            name: "USB Flash Drive 32GB Bamboo Case",
-            price: 18.00,
-            category: "electronics",
-            certs: ["Sustainable Materials"],
-            recycled_pct: 45,
-            co2e_per_unit: 0.85,
-            lead_time_days: 7,
-            moq: 10
-          }
-        ];
-      } else if (desc.includes('poster tube') || desc.includes('tube')) {
-        matchedProducts = [
-          {
-            sku: "TUBE-STD-37IN",
-            name: "Poster Tube 37 inch Standard",
-            price: 6.50,
-            category: "packaging",
-            certs: [],
-            recycled_pct: 0,
-            co2e_per_unit: 0.35,
-            lead_time_days: 2,
-            moq: 10
-          },
-          {
-            sku: "TUBE-RCY-37IN",
-            name: "Poster Tube 37 inch Recycled",
-            price: 7.25,
-            category: "packaging",
-            certs: ["Recycled Content"],
-            recycled_pct: 90,
-            co2e_per_unit: 0.22,
-            lead_time_days: 3,
-            moq: 10
-          }
-        ];
-      } else if (desc.includes('business card') || desc.includes('card')) {
-        matchedProducts = [
-          {
-            sku: "CARD-STD-16PT",
-            name: "Business Cards 16pt Standard",
-            price: 0.12,
-            category: "office_supplies",
-            certs: [],
-            recycled_pct: 0,
-            co2e_per_unit: 0.05,
-            lead_time_days: 5,
-            moq: 500
-          },
-          {
-            sku: "CARD-RCY-16PT",
-            name: "Business Cards 16pt Recycled",
-            price: 0.14,
-            category: "office_supplies",
-            certs: ["FSC Recycled"],
-            recycled_pct: 100,
-            co2e_per_unit: 0.03,
-            lead_time_days: 7,
-            moq: 500
-          }
-        ];
-      } else if (desc.includes('banner') || desc.includes('display')) {
-        matchedProducts = [
-          {
-            sku: "BANNER-STD-33X79",
-            name: "Retractable Banner 33x79 Standard",
-            price: 95.00,
-            category: "marketing",
-            certs: [],
-            recycled_pct: 0,
-            co2e_per_unit: 2.50,
-            lead_time_days: 7,
-            moq: 1
-          },
-          {
-            sku: "BANNER-ECO-33X79",
-            name: "Retractable Banner 33x79 Eco-Fabric",
-            price: 120.00,
-            category: "marketing",
-            certs: ["Recycled Content", "Low Carbon"],
-            recycled_pct: 60,
-            co2e_per_unit: 1.40,
-            lead_time_days: 10,
-            moq: 1
-          }
-        ];
-      } else if (desc.includes('whiteboard') || desc.includes('cleaner spray')) {
-        matchedProducts = [
-          {
-            sku: "CLEAN-WB-STD",
-            name: "Whiteboard Cleaner Spray Standard",
-            price: 5.50,
-            category: "office_supplies",
-            certs: [],
-            recycled_pct: 0,
-            co2e_per_unit: 0.35,
-            lead_time_days: 2,
-            moq: 12
-          },
-          {
-            sku: "CLEAN-WB-ECO",
-            name: "Whiteboard Cleaner Spray Eco-Formula",
-            price: 6.50,
-            category: "office_supplies",
-            certs: ["Post-Consumer Recycled"],
-            recycled_pct: 90,
-            co2e_per_unit: 0.45,
-            lead_time_days: 5,
-            moq: 12
           }
         ];
       } else {
