@@ -228,30 +228,192 @@ class SupplyChainMCPService {
 
     console.log(`🔍 Finding alternatives for: "${desc}"`);
 
-    // Keyword → category map
-    const keywordCategoryMap = [
-      { keywords: ['paper','folder','notebook'], categories: ['office_supplies'] },
-      { keywords: ['towel'], categories: ['janitorial'] },
-      { keywords: ['pen'], categories: ['office_supplies'] },
-      { keywords: ['cleaner','cleaning','solution'], categories: ['janitorial'] },
-      { keywords: ['ethernet','cat6','network cable'], categories: ['it_hardware'] },
-      { keywords: ['thermal paste','thermal'], categories: ['it_hardware'] },
-      { keywords: ['label'], categories: ['it_supplies'] },
-      { keywords: ['wrist','anti static','esd'], categories: ['it_hardware'] }
-    ];
-
-    for (const entry of keywordCategoryMap) {
-      if (entry.keywords.some(k => desc.includes(k))) {
-        matchedProducts = this.products.filter(p => entry.categories.includes(p.category));
-        console.log(`🗂️ Category match (${entry.categories.join(', ')}): ${matchedProducts.length} products`);
-        break;
-      }
+    // First check for specific mock alternatives before using category matching
+    if (desc.includes('sticky') || desc.includes('post-it')) {
+      matchedProducts = [
+        {
+          sku: "STICKY-STD-ASST",
+          name: "Sticky Notes Assorted Colors",
+          price: 8.50,
+          category: "office_supplies",
+          certs: [],
+          recycled_pct: 0,
+          co2e_per_unit: 0.15,
+          lead_time_days: 1,
+          moq: 12
+        },
+        {
+          sku: "STICKY-RCY-ASST",
+          name: "Sticky Notes Recycled Paper",
+          price: 9.75,
+          category: "office_supplies",
+          certs: ["Recycled Content"],
+          recycled_pct: 30,
+          co2e_per_unit: 0.12,
+          lead_time_days: 2,
+          moq: 12
+        }
+      ];
+      console.log(`🆕 Created ${matchedProducts.length} mock alternatives for sticky notes`);
+    } else if (desc.includes('usb') || desc.includes('flash drive')) {
+      matchedProducts = [
+        {
+          sku: "USB-STD-32GB",
+          name: "USB Flash Drive 32GB Standard",
+          price: 12.00,
+          category: "electronics",
+          certs: [],
+          recycled_pct: 0,
+          co2e_per_unit: 1.20,
+          lead_time_days: 3,
+          moq: 10
+        },
+        {
+          sku: "USB-ECO-32GB",
+          name: "USB Flash Drive 32GB Bamboo Case",
+          price: 18.00,
+          category: "electronics",
+          certs: ["Sustainable Materials"],
+          recycled_pct: 45,
+          co2e_per_unit: 0.85,
+          lead_time_days: 7,
+          moq: 10
+        }
+      ];
+      console.log(`🆕 Created ${matchedProducts.length} mock alternatives for USB drives`);
+    } else if (desc.includes('poster tube') || desc.includes('tube')) {
+      matchedProducts = [
+        {
+          sku: "TUBE-STD-37IN",
+          name: "Poster Tube 37 inch Standard",
+          price: 6.50,
+          category: "packaging",
+          certs: [],
+          recycled_pct: 0,
+          co2e_per_unit: 0.35,
+          lead_time_days: 2,
+          moq: 10
+        },
+        {
+          sku: "TUBE-RCY-37IN",
+          name: "Poster Tube 37 inch Recycled",
+          price: 7.25,
+          category: "packaging",
+          certs: ["Recycled Content"],
+          recycled_pct: 90,
+          co2e_per_unit: 0.22,
+          lead_time_days: 3,
+          moq: 10
+        }
+      ];
+      console.log(`🆕 Created ${matchedProducts.length} mock alternatives for poster tubes`);
+    } else if (desc.includes('business card') || desc.includes('card')) {
+      matchedProducts = [
+        {
+          sku: "CARD-STD-16PT",
+          name: "Business Cards 16pt Standard",
+          price: 0.12,
+          category: "office_supplies",
+          certs: [],
+          recycled_pct: 0,
+          co2e_per_unit: 0.05,
+          lead_time_days: 5,
+          moq: 500
+        },
+        {
+          sku: "CARD-RCY-16PT",
+          name: "Business Cards 16pt Recycled",
+          price: 0.14,
+          category: "office_supplies",
+          certs: ["FSC Recycled"],
+          recycled_pct: 100,
+          co2e_per_unit: 0.03,
+          lead_time_days: 7,
+          moq: 500
+        }
+      ];
+      console.log(`🆕 Created ${matchedProducts.length} mock alternatives for business cards`);
+    } else if (desc.includes('banner') || desc.includes('display')) {
+      matchedProducts = [
+        {
+          sku: "BANNER-STD-33X79",
+          name: "Retractable Banner 33x79 Standard",
+          price: 95.00,
+          category: "marketing",
+          certs: [],
+          recycled_pct: 0,
+          co2e_per_unit: 2.50,
+          lead_time_days: 7,
+          moq: 1
+        },
+        {
+          sku: "BANNER-ECO-33X79",
+          name: "Retractable Banner 33x79 Eco-Fabric",
+          price: 120.00,
+          category: "marketing",
+          certs: ["Recycled Content", "Low Carbon"],
+          recycled_pct: 60,
+          co2e_per_unit: 1.40,
+          lead_time_days: 10,
+          moq: 1
+        }
+      ];
+      console.log(`🆕 Created ${matchedProducts.length} mock alternatives for banners`);
+    } else if (desc.includes('whiteboard') || desc.includes('cleaner spray')) {
+      matchedProducts = [
+        {
+          sku: "CLEAN-WB-STD",
+          name: "Whiteboard Cleaner Spray Standard",
+          price: 5.50,
+          category: "office_supplies",
+          certs: [],
+          recycled_pct: 0,
+          co2e_per_unit: 0.35,
+          lead_time_days: 2,
+          moq: 12
+        },
+        {
+          sku: "CLEAN-WB-ECO",
+          name: "Whiteboard Cleaner Spray Eco-Formula",
+          price: 6.50,
+          category: "office_supplies",
+          certs: ["Post-Consumer Recycled"],
+          recycled_pct: 90,
+          co2e_per_unit: 0.45,
+          lead_time_days: 5,
+          moq: 12
+        }
+      ];
+      console.log(`🆕 Created ${matchedProducts.length} mock alternatives for whiteboard cleaner`);
     }
 
-    // Narrow further by keyword in product name to improve relevance
-    if (matchedProducts.length > 0) {
-      const nameFiltered = matchedProducts.filter(p => p.name.toLowerCase().includes(desc.split(' ')[0]));
-      if (nameFiltered.length > 0) matchedProducts = nameFiltered;
+    // Only try keyword-based category matching if no specific matches found above
+    if (matchedProducts.length === 0) {
+      // Keyword → category map
+      const keywordCategoryMap = [
+        { keywords: ['paper','folder','notebook'], categories: ['office_supplies'] },
+        { keywords: ['towel'], categories: ['janitorial'] },
+        { keywords: ['pen'], categories: ['office_supplies'] },
+        { keywords: ['cleaner','cleaning','solution'], categories: ['janitorial'] },
+        { keywords: ['ethernet','cat6','network cable'], categories: ['it_hardware'] },
+        { keywords: ['thermal paste','thermal'], categories: ['it_hardware'] },
+        { keywords: ['label'], categories: ['it_supplies'] },
+        { keywords: ['wrist','anti static','esd'], categories: ['it_hardware'] }
+      ];
+
+      for (const entry of keywordCategoryMap) {
+        if (entry.keywords.some(k => desc.includes(k))) {
+          matchedProducts = this.products.filter(p => entry.categories.includes(p.category));
+          console.log(`🗂️ Category match (${entry.categories.join(', ')}): ${matchedProducts.length} products`);
+          break;
+        }
+      }
+
+      // Narrow further by keyword in product name to improve relevance
+      if (matchedProducts.length > 0) {
+        const nameFiltered = matchedProducts.filter(p => p.name.toLowerCase().includes(desc.split(' ')[0]));
+        if (nameFiltered.length > 0) matchedProducts = nameFiltered;
+      }
     }
 
     if (matchedProducts.length === 0) {
@@ -333,7 +495,7 @@ class SupplyChainMCPService {
             moq: 12
           }
         ];
-      } else if (desc.includes('notebook') || desc.includes('note')) {
+      } else if (desc.includes('notebook') || desc.includes('note') && !desc.includes('sticky')) {
         matchedProducts = [
           {
             sku: "NOTE-STD-SPIRAL",
@@ -427,6 +589,18 @@ class SupplyChainMCPService {
       return this.products.find(p => p.sku === 'PEN-STD-BLK');
     } else if (desc.includes('cleaner') || desc.includes('cleaning')) {
       return this.products.find(p => p.sku === 'CLEAN-STD-ALL');
+    } else if (desc.includes('business card') || desc.includes('card')) {
+      return { sku: 'CARD-STD-16PT', price: 0.12, co2e_per_unit: 0.05 };
+    } else if (desc.includes('banner') || desc.includes('display')) {
+      return { sku: 'BANNER-STD-33X79', price: 95.00, co2e_per_unit: 2.50 };
+    } else if (desc.includes('sticky') || desc.includes('post-it')) {
+      return { sku: 'STICKY-STD-ASST', price: 8.50, co2e_per_unit: 0.15 };
+    } else if (desc.includes('notebook') || (desc.includes('note') && !desc.includes('sticky'))) {
+      return { sku: 'NOTE-STD-SPIRAL', price: 3.50, co2e_per_unit: 0.45 };
+    } else if (desc.includes('usb') || desc.includes('flash drive')) {
+      return { sku: 'USB-STD-32GB', price: 12.00, co2e_per_unit: 1.20 };
+    } else if (desc.includes('poster tube') || desc.includes('tube')) {
+      return { sku: 'TUBE-STD-37IN', price: 6.50, co2e_per_unit: 0.35 };
     }
     
     return null;
@@ -444,58 +618,153 @@ class SupplyChainMCPService {
       };
     }
 
-    const available = inventory ? parseInt(inventory.stock) : 0;
-    const totalPrice = product.price * qty;
+    // Use default inventory if not found
+    const defaultOnHand = 1000;
+    const onHand = inventory ? parseInt(inventory.stock || inventory.on_hand) : defaultOnHand;
+    const available = onHand >= qty;
+    const price_tier = qty >= (product.moq || 50) ? "bulk" : "standard";
+    const bulk_discount = price_tier === "bulk" ? 0.1 : 0;
+    const final_price = product.price * (1 - bulk_discount);
 
     return {
       success: true,
       sku: sku,
-      name: product.name,
-      price_per_unit: product.price,
-      quantity_requested: qty,
-      quantity_available: available,
-      in_stock: available >= qty,
-      total_price: totalPrice.toFixed(2),
-      lead_time_days: product.lead_time_days
+      available: available,
+      on_hand: onHand,
+      requested_qty: qty,
+      price_tier: price_tier,
+      unit_price: final_price.toFixed(2),
+      total_price: (final_price * qty).toFixed(2),
+      eta_days: product.lead_time_days,
+      bulk_discount_applied: bulk_discount > 0
     };
   }
 
   // MCP Tool 4: Create bulk order
-  createBulkOrder(items) {
-    const orderItems = items.map(item => {
-      const stockCheck = this.checkStockAndPrice(item.sku, item.qty);
-      return {
-        ...item,
-        ...stockCheck
-      };
-    });
+  createBulkOrder(selectedItems) {
+    const po_id = `PO-${Date.now().toString().slice(-4)}`;
+    let subtotal = 0;
+    let max_eta = 0;
+    let total_co2e_savings = 0;
+    let total_cost_savings = 0;
 
-    const totalValue = orderItems.reduce((sum, item) => 
-      sum + (item.success ? parseFloat(item.total_price) : 0), 0
-    );
+    const orderItems = selectedItems.map(item => {
+      const stockCheck = this.checkStockAndPrice(item.sku || item.alt_sku, item.qty);
+      
+      if (!stockCheck.success) {
+        // Skip items that can't be processed
+        return null;
+      }
+      
+      const itemTotal = parseFloat(stockCheck.total_price);
+      subtotal += itemTotal;
+      max_eta = Math.max(max_eta, stockCheck.eta_days || 0);
+
+      // Calculate savings vs standard alternatives
+      if (item.price_delta && item.price_delta.absolute) {
+        total_cost_savings += parseFloat(item.price_delta.absolute) * item.qty;
+      }
+      if (item.co2e_delta && item.co2e_delta.absolute) {
+        total_co2e_savings += Math.abs(parseFloat(item.co2e_delta.absolute)) * item.qty;
+      }
+
+      return {
+        sku: item.sku || item.alt_sku,
+        name: item.name,
+        qty: item.qty,
+        unit_price: stockCheck.unit_price,
+        total_price: stockCheck.total_price,
+        eta_days: stockCheck.eta_days,
+        certs: item.certs || []
+      };
+    }).filter(item => item !== null); // Remove failed items
 
     return {
       success: true,
-      order_id: `PO-${Date.now()}`,
+      po_id: po_id,
+      subtotal: subtotal.toFixed(2),
+      eta_days: max_eta,
+      total_co2e_savings: total_co2e_savings.toFixed(2),
+      total_cost_savings: total_cost_savings.toFixed(2),
       items: orderItems,
-      total_value: totalValue.toFixed(2),
-      status: "pending_approval"
+      sustainability_score: this.calculateSustainabilityScore(orderItems)
     };
   }
 
+  calculateSustainabilityScore(items) {
+    let totalScore = 0;
+    let totalItems = items.length;
+
+    items.forEach(item => {
+      const product = this.products.find(p => p.sku === item.sku);
+      if (product) {
+        let itemScore = 0;
+        
+        // Recycled content score (0-40 points)
+        itemScore += (product.recycled_pct / 100) * 40;
+        
+        // Certifications score (0-30 points)
+        itemScore += Math.min(product.certs.length * 10, 30);
+        
+        // CO2 efficiency score (0-30 points)
+        itemScore += Math.max(0, (2.0 - product.co2e_per_unit) / 2.0 * 30);
+        
+        totalScore += itemScore;
+      }
+    });
+
+    return Math.round(totalScore / totalItems);
+  }
+
   // MCP Tool 5: Generate quote
-  emitQuote(orderId, orderData) {
+  emitQuote(po_id, orderData) {
+    const quote = {
+      po_id: po_id,
+      generated_at: new Date().toISOString(),
+      summary: this.generateOrderSummary(orderData),
+      file_url: `/api/quotes/${po_id}.pdf`,
+      sustainability_highlights: {
+        co2e_reduction: orderData.total_co2e_savings + " kg CO2e saved",
+        cost_impact: orderData.total_cost_savings >= 0 ? 
+          `$${Math.abs(orderData.total_cost_savings)} saved` : 
+          `$${Math.abs(orderData.total_cost_savings)} additional`,
+        certifications: this.extractUniqueCerts(orderData.items),
+        sustainability_score: orderData.sustainability_score + "/100"
+      }
+    };
+
     return {
       success: true,
-      quote_id: `QT-${Date.now()}`,
-      order_id: orderId,
-      quote_date: new Date().toISOString().split('T')[0],
-      valid_until: new Date(Date.now() + 30*24*60*60*1000).toISOString().split('T')[0],
-      items: orderData.items,
-      subtotal: orderData.total_value,
-      tax: (parseFloat(orderData.total_value) * 0.08).toFixed(2),
-      total: (parseFloat(orderData.total_value) * 1.08).toFixed(2)
+      quote: quote
     };
+  }
+
+  generateOrderSummary(orderData) {
+    const co2Reduction = parseFloat(orderData.total_co2e_savings);
+    const costSavings = parseFloat(orderData.total_cost_savings);
+    const eta = orderData.eta_days;
+
+    let summary = `Draft order ready. `;
+    
+    if (co2Reduction > 0) {
+      const reductionPercent = ((co2Reduction / 10) * 100).toFixed(0); // Rough estimate
+      summary += `Sustainable alternatives cut ~${reductionPercent}% CO2e `;
+    }
+    
+    if (costSavings >= 0) {
+      summary += `with $${Math.abs(costSavings).toFixed(0)} savings; `;
+    } else {
+      summary += `with $${Math.abs(costSavings).toFixed(0)} additional cost; `;
+    }
+    
+    summary += `ETA ${eta} days. Quote ready to review.`;
+    
+    return summary;
+  }
+
+  extractUniqueCerts(items) {
+    const allCerts = items.flatMap(item => item.certs || []);
+    return [...new Set(allCerts)];
   }
 }
 
