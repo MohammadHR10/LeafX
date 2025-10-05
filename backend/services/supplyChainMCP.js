@@ -593,10 +593,10 @@ class SupplyChainMCPService {
       return { sku: 'CARD-STD-16PT', price: 0.12, co2e_per_unit: 0.05 };
     } else if (desc.includes('banner') || desc.includes('display')) {
       return { sku: 'BANNER-STD-33X79', price: 95.00, co2e_per_unit: 2.50 };
-    } else if (desc.includes('notebook') || desc.includes('note')) {
-      return { sku: 'NOTE-STD-SPIRAL', price: 3.50, co2e_per_unit: 0.45 };
     } else if (desc.includes('sticky') || desc.includes('post-it')) {
       return { sku: 'STICKY-STD-ASST', price: 8.50, co2e_per_unit: 0.15 };
+    } else if (desc.includes('notebook') || (desc.includes('note') && !desc.includes('sticky'))) {
+      return { sku: 'NOTE-STD-SPIRAL', price: 3.50, co2e_per_unit: 0.45 };
     } else if (desc.includes('usb') || desc.includes('flash drive')) {
       return { sku: 'USB-STD-32GB', price: 12.00, co2e_per_unit: 1.20 };
     } else if (desc.includes('poster tube') || desc.includes('tube')) {
