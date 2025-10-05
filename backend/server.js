@@ -3,6 +3,7 @@ import cors from "cors";
 import express from "express";
 import dotenv from "dotenv";
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import SupplyChainMCPService from './services/supplyChainMCP.js';
 
 dotenv.config();
 
@@ -11,6 +12,9 @@ const PORT = process.env.PORT || 5001; // use 5001 to avoid macOS system service
 
 // Initialize Gemini AI
 const genAI = process.env.GEMINI_API_KEY ? new GoogleGenerativeAI(process.env.GEMINI_API_KEY) : null;
+
+// Initialize Supply Chain MCP Service
+const mcpService = new SupplyChainMCPService();
 
 app.use(cors()); // allow cross-origin requests
 app.use(express.json());
@@ -457,6 +461,96 @@ app.get("/api/eleven/signed-ws", async (req, res) => {
   } catch (error) {
     console.error('Error fetching signed URL:', error);
     res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// ================== SUPPLY CHAIN MCP ROUTES ==================
+
+// Route 1: Upload PDF and extract line items
+app.post('/api/mcp/upload-pdf', async (req, res) => {
+  try {
+    const { fileContent, filename } = req.body;
+    console.log('=== FILE UPLOAD ENDPOINT ===');
+    console.log('📄 File upload received:', filename);
+    console.log('📏 Content length:', fileContent ? fileContent.length : 'null');
+    console.log('🔍 Content starts with:', fileContent ? fileContent.substring(0, 50) : 'null');
+    console.log('📂 File type detection:', fileContent ? (fileContent.startsWith('data:application/pdf') ? 'PDF' : fileContent.startsWith('data:application/vnd.openxmlformats') ? 'DOCX' : 'Other') : 'Unknown');
+    const result = await mcpService.uploadPdfAndExtractLines(fileContent, filename);
+    console.log('✅ Extraction result success:', result.success);
+    console.log('📋 Items extracted:', result.line_items ? result.line_items.length : 0);
+    console.log('🏷️ Extracted from:', result.extracted_from);
+    console.log('=== END FILE UPLOAD ===');
+    res.json(result);
+  } catch (error) {
+    console.error('Error extracting PDF:', error);
+    res.status(500).json({ error: 'Failed to extract line items from PDF' });
+  }
+});
+
+// Route 2: Find sustainable alternatives
+app.post('/api/mcp/find-alternatives', async (req, res) => {
+  try {
+    const { items } = req.body;
+    console.log('=== FIND ALTERNATIVES ENDPOINT ===');
+    console.log('📦 Items received:', items ? items.length : 0);
+    console.log('📝 Items data:', JSON.stringify(items, null, 2));
+    
+    const result = mcpService.findSustainableAlternatives(items);
+    
+    console.log('✅ Alternatives result success:', result ? result.success : 'no result');
+    console.log('🌱 Alternatives found:', result && result.items ? result.items.length : 0);
+    console.log('=== END FIND ALTERNATIVES ===');
+    
+    res.json(result);
+  } catch (error) {
+    console.error('Error finding alternatives:', error);
+    res.status(500).json({ error: 'Failed to find sustainable alternatives', details: error.message });
+  }
+});
+
+// Route 3: Check stock and pricing
+app.post('/api/mcp/check-stock', async (req, res) => {
+  try {
+    const { sku, qty } = req.body;
+    const result = mcpService.checkStockAndPrice(sku, qty);
+    res.json(result);
+  } catch (error) {
+    console.error('Error checking stock:', error);
+    res.status(500).json({ error: 'Failed to check stock availability' });
+  }
+});
+
+// Route 4: Create bulk order
+app.post('/api/mcp/create-order', async (req, res) => {
+  try {
+    const { selectedItems } = req.body;
+    const result = mcpService.createBulkOrder(selectedItems);
+    res.json(result);
+  } catch (error) {
+    console.error('Error creating order:', error);
+    res.status(500).json({ error: 'Failed to create bulk order' });
+  }
+});
+
+// Route 5: Generate quote
+app.post('/api/mcp/generate-quote', async (req, res) => {
+  try {
+    const { po_id, orderData } = req.body;
+    const result = mcpService.emitQuote(po_id, orderData);
+    res.json(result);
+  } catch (error) {
+    console.error('Error generating quote:', error);
+    res.status(500).json({ error: 'Failed to generate quote' });
+  }
+});
+
+// Route 6: Get marketplace products (enhanced)
+app.get('/api/mcp/products', async (req, res) => {
+  try {
+    res.json({ products: mcpService.products });
+  } catch (error) {
+    console.error('Error fetching products:', error);
+    res.status(500).json({ error: 'Failed to fetch products' });
   }
 });
 
