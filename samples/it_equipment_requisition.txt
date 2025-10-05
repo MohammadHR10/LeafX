@@ -1,0 +1,28 @@
+IT DEPARTMENT EQUIPMENT & SUPPLIES REQUISITION (STRUCTURED BULLET FORMAT)
+============================================================
+
+# Context (ignored by parser):
+# Department: Information Technology | Date: Oct 5 2025 | Manager: Kevin Park
+# Cost Center: IT-HARDWARE-2025 | Priority: Standard
+
+# Structured list for dynamic extraction (pattern: - item description (quantity unit))
+- Ethernet cables cat6 (50 cables)
+- Cable management ties velcro (1000 pieces)
+- Computer cleaning supplies kits (24 kits)
+- Label maker tape refills (20 cartridges)
+- Cable sleeves spiral wrap (500 feet)
+- Anti-static wrist straps (15 units)
+- Thermal paste silver based (12 tubes)
+- Cable tester network (3 units)
+- Zip ties assorted (2000 pieces)
+- Equipment labels asset tracking (5000 labels)
+
+# Technical specs (non-parsed): Cat6 standard, reusable management, IEC 61340 compliant anti-static
+# Environmental: Minimal packaging, RoHS, recyclable materials, non-toxic cleaners
+# Delivery: Consolidated shipments → IT storage B-105 | Hours 9-5 | Help Desk ext. 4357
+# Budget: 2750 USD | PO required > $500 | bulk discounts encouraged
+# Compatibility: Dell/HP/Lenovo, Brother TZe, standard USB/Ethernet, 110V AC
+# Vendor: Authorized, support, 1yr warranty, returns accepted
+# Timeline: Order 10/8 → Delivery 10/15 → Install 10/16-18 → Complete 10/20
+# Contact: Kevin Park (kevin.park@company.com)
+# Tracking: IT-REQ-2025-1005-001 | Classification: Internal Use Only

@@ -1,0 +1,55 @@
+Q3 OFFICE SUPPLIES PROCUREMENT LIST
+====================================
+
+Department: Operations
+Request Date: October 15, 2024
+Requested By: Sarah Johnson
+Cost Center: OPS-2024-Q3
+
+OFFICE SUPPLIES NEEDED:
+
+1. A4 Copy Paper (80gsm white)
+   Quantity: 500 reams
+   Current Supplier: Generic Office Co.
+   
+2. Paper Hand Towels (2-ply)
+   Quantity: 60 cases
+   Note: For all office restrooms
+   
+3. Ballpoint Pens (black ink)
+   Quantity: 100 boxes (12 pens each)
+   Preference: Reliable, smooth writing
+   
+4. All-Purpose Cleaning Solution
+   Quantity: 24 bottles (500ml each)
+   Note: For general office cleaning
+   
+5. Whiteboard Markers (assorted colors)
+   Quantity: 50 sets
+   Colors needed: Black, blue, red, green
+   
+6. Desk Organizers (plastic)
+   Quantity: 75 units
+   Size: Standard desktop size
+   
+7. Printer Cartridges (HP LaserJet)
+   Quantity: 24 units
+   Model: CF280A (black toner)
+   
+8. File Folders (letter size)
+   Quantity: 200 boxes
+   Color: Manila or natural
+
+APPROVAL CHAIN:
+- Department Manager: Sarah Johnson
+- Procurement: Mike Chen
+- Finance: Lisa Wang
+
+NOTES:
+- All items needed by November 30, 2024
+- Budget ceiling: $15,000
+- Preference for eco-friendly alternatives where available
+- Bulk discounts appreciated
+
+Contact: sarah.johnson@company.com
+Phone: (555) 123-4567

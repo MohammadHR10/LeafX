@@ -1,0 +1,35 @@
+MARKETING DEPARTMENT - Q4 CAMPAIGN PROCUREMENT (STRUCTURED FOR DYNAMIC EXTRACTION)
+================================================================
+
+# Original context (kept for reference, ignored by parser)
+# Campaign: "Green Future Initiative 2025"
+# Department: Marketing & Communications
+# Requested by: Alex Chen, Marketing Director
+# Date: October 5, 2025
+# Budget Code: MKT-Q4-2025-GF
+
+# The backend extractor expects lines in the pattern:
+# - Item description (quantity unit)
+# Keep units simple and singular/plural as appropriate.
+
+- Business cards premium stock (5000 cards)
+- Trade show banner stands (12 units)
+- Branded notebooks corporate gift sets (800 notebooks)
+- Promotional pens executive style (2500 pens)
+- Presentation folders custom design (1200 folders)
+- USB flash drives branded (500 drives)
+- Tote bags canvas material (1000 bags)
+- Sticky note sets multi-color (300 sets)
+- Brochures tri-fold design (10000 brochures)
+- Poster printing large format (150 posters)
+- Poster tubes protective (75 tubes)
+- Bubble wrap packaging material (20 rolls)
+
+# Sustainability notes (non-parsed):
+# Prioritize recycled materials | Request FSC paper | Use biodegradable packaging | Evaluate carbon footprint
+
+# Meta:
+# TOTAL ESTIMATED BUDGET: 18750 USD (reference only)
+# APPROVAL STATUS: Pending
+# VENDOR SELECTION: Open for sustainable suppliers
+# Contact: Alex Chen (alex.chen@company.com, Ext. 2847)
