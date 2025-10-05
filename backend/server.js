@@ -4,6 +4,7 @@ import express from "express";
 import dotenv from "dotenv";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import SupplyChainMCPService from './services/supplyChainMCP.js';
+import { agentRespond, invokeTool } from './agent/agentController.js';
 
 dotenv.config();
 
@@ -551,6 +552,43 @@ app.get('/api/mcp/products', async (req, res) => {
   } catch (error) {
     console.error('Error fetching products:', error);
     res.status(500).json({ error: 'Failed to fetch products' });
+  }
+});
+
+// Route 7: Assess sustainability impact
+app.post('/api/mcp/assess-impact', async (req, res) => {
+  try {
+    const { selections } = req.body; // [{ original: {desc, qty, unit}, alt_sku }]
+    const result = mcpService.assessImpact(selections || []);
+    res.json(result);
+  } catch (error) {
+    console.error('Error assessing impact:', error);
+    res.status(500).json({ error: 'Failed to assess impact' });
+  }
+});
+
+// ===== Agent (AgentTune placeholder) =====
+app.post('/api/agent/message', async (req, res) => {
+  try {
+    const { message, context } = req.body;
+    if (!message) return res.status(400).json({ error: 'message required' });
+    const reply = await agentRespond(message, context || {});
+    res.json(reply);
+  } catch (e) {
+    console.error('Agent error:', e);
+    res.status(500).json({ error: 'agent failure' });
+  }
+});
+
+app.post('/api/agent/tool', async (req, res) => {
+  try {
+    const { tool, args } = req.body;
+    if (!tool) return res.status(400).json({ error: 'tool required' });
+    const result = await invokeTool(tool, args || {});
+    res.json(result);
+  } catch (e) {
+    console.error('Tool invocation error:', e);
+    res.status(500).json({ error: 'tool failure' });
   }
 });
 

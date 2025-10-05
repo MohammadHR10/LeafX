@@ -238,6 +238,15 @@ class SupplyChainMCPService {
       { keywords: ['thermal paste','thermal'], categories: ['it_hardware'] },
       { keywords: ['label'], categories: ['it_supplies'] },
       { keywords: ['wrist','anti static','esd'], categories: ['it_hardware'] }
+  ,{ keywords: ['business card','card'], categories: ['marketing_collateral'] }
+  ,{ keywords: ['banner','stand'], categories: ['marketing_collateral'] }
+  ,{ keywords: ['usb','flash drive'], categories: ['it_supplies'] }
+  ,{ keywords: ['tote','bag'], categories: ['marketing_collateral'] }
+  ,{ keywords: ['sticky note','sticky'], categories: ['office_supplies'] }
+  ,{ keywords: ['brochure'], categories: ['marketing_collateral'] }
+  ,{ keywords: ['poster'], categories: ['marketing_collateral'] }
+  ,{ keywords: ['tube'], categories: ['packaging'] }
+  ,{ keywords: ['bubble wrap','bubble'], categories: ['packaging'] }
     ];
 
     for (const entry of keywordCategoryMap) {
@@ -496,6 +505,53 @@ class SupplyChainMCPService {
       tax: (parseFloat(orderData.total_value) * 0.08).toFixed(2),
       total: (parseFloat(orderData.total_value) * 1.08).toFixed(2)
     };
+  }
+
+  // MCP Tool 6: Assess sustainability impact for chosen alternatives
+  // items: [{ original: {desc, qty, unit}, alt_sku }]
+  assessImpact(items) {
+    const lineDetails = items.map(entry => {
+      const alt = this.products.find(p => p.sku === entry.alt_sku);
+      const baseline = this.findOriginalProduct(entry.original) || alt; // fallback to alt if no baseline
+      const qty = entry.original.qty || entry.qty || 1;
+      const baselineCo2 = baseline ? baseline.co2e_per_unit * qty : 0;
+      const altCo2 = alt ? alt.co2e_per_unit * qty : 0;
+      const co2Delta = altCo2 - baselineCo2; // negative = reduction
+      const baselineCost = baseline ? baseline.price * qty : 0;
+      const altCost = alt ? alt.price * qty : 0;
+      const costDelta = altCost - baselineCost; // negative = savings
+      return {
+        original_desc: entry.original.desc,
+        qty,
+        baseline_sku: baseline ? baseline.sku : null,
+        alt_sku: alt ? alt.sku : null,
+        baseline_co2e_total: baselineCo2.toFixed(2),
+        alt_co2e_total: altCo2.toFixed(2),
+        co2_delta: co2Delta.toFixed(2),
+        baseline_cost_total: baselineCost.toFixed(2),
+        alt_cost_total: altCost.toFixed(2),
+        cost_delta: costDelta.toFixed(2)
+      };
+    });
+
+    const totals = lineDetails.reduce((acc, l) => {
+      acc.baseline_co2e += parseFloat(l.baseline_co2e_total);
+      acc.alt_co2e += parseFloat(l.alt_co2e_total);
+      acc.baseline_cost += parseFloat(l.baseline_cost_total);
+      acc.alt_cost += parseFloat(l.alt_cost_total);
+      return acc;
+    }, { baseline_co2e: 0, alt_co2e: 0, baseline_cost: 0, alt_cost: 0 });
+
+    const overall = {
+      baseline_co2e: totals.baseline_co2e.toFixed(2),
+      alt_co2e: totals.alt_co2e.toFixed(2),
+      co2_reduction: (totals.baseline_co2e - totals.alt_co2e).toFixed(2),
+      baseline_cost: totals.baseline_cost.toFixed(2),
+      alt_cost: totals.alt_cost.toFixed(2),
+      cost_difference: (totals.alt_cost - totals.baseline_cost).toFixed(2)
+    };
+
+    return { success: true, lines: lineDetails, overall };
   }
 }
 
