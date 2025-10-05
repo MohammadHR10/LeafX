@@ -1,21 +1,62 @@
-import React from "react";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route
-} from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Home from "./components/Home";
 import Marketplace from "./components/Marketplace";
+import Advising from "./components/Advising";
+import AuthPage from "./components/AuthPage";
+import "./App.css";
 
 function App() {
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const savedUser = localStorage.getItem('leafx_user');
+    if (savedUser) {
+      try {
+        setUser(JSON.parse(savedUser));
+      } catch (error) {
+        console.error('Error parsing saved user:', error);
+        localStorage.removeItem('leafx_user');
+      }
+    }
+    setLoading(false);
+  }, []);
+
+  const handleLogin = (userData) => {
+    setUser(userData);
+    localStorage.setItem('leafx_user', JSON.stringify(userData));
+  };
+
+  const handleLogout = () => {
+    setUser(null);
+    localStorage.removeItem('leafx_user');
+  };
+
+  if (loading) {
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+        <div style={{ textAlign: 'center', padding: '20px' }}>
+          Loading LeafX...
+        </div>
+      </div>
+    );
+  }
+
   return (
     <Router>
-      <Navbar />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/marketplace" element={<Marketplace />} />
-      </Routes>
+      <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+        <Navbar user={user} onLogout={handleLogout} />
+        <div style={{ flex: 1, padding: '80px 20px 20px 20px' }}>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/advising" element={user ? <Advising /> : <AuthPage onLogin={handleLogin} />} />
+            <Route path="/marketplace" element={<Marketplace />} />
+            <Route path="/auth" element={<AuthPage onLogin={handleLogin} />} />
+          </Routes>
+        </div>
+      </div>
     </Router>
   );
 }
