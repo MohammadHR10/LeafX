@@ -43,11 +43,15 @@ const categories = ["All", "Energy Efficiency", "Office Supplies", "Kitchen", "E
 
 export default function Marketplace() {
   const [selectedCategory, setSelectedCategory] = useState("All");
+  const [cart, setCart] = useState([]);
 
   const filteredProducts =
     selectedCategory === "All"
       ? products
       : products.filter((p) => p.category === selectedCategory);
+
+
+
 
   return (
     <div style={{ padding: "3rem 2rem", backgroundColor: "#f8fff8" }}>

@@ -15,6 +15,54 @@ const genAI = process.env.GEMINI_API_KEY ? new GoogleGenerativeAI(process.env.GE
 app.use(cors()); // allow cross-origin requests
 app.use(express.json());
 
+// Marketplace routes
+const products = [
+  {
+    id: 1,
+    name: "Solar-Powered Desk Lamp",
+    category: "Energy Efficiency",
+    price: 39.99,
+    description: "A sleek solar desk lamp that reduces electricity usage.",
+    image: "https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=500&q=60",
+  },
+  {
+    id: 2,
+    name: "Recycled Office Paper Pack",
+    category: "Office Supplies",
+    price: 12.5,
+    description: "100% post-consumer recycled A4 paper — eco-certified and chlorine-free.",
+    image: "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=500&q=60",
+  },
+  {
+    id: 3,
+    name: "Compostable Coffee Cups (Pack of 50)",
+    category: "Kitchen",
+    price: 18.0,
+    description: "Made from corn-based bioplastic — industrially compostable and durable.",
+    image: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=500&q=60",
+  },
+  {
+    id: 4,
+    name: "Bamboo Keyboard & Mouse Set",
+    category: "Electronics",
+    price: 59.99,
+    description: "Sustainably sourced bamboo design for modern eco-conscious offices.",
+    image: "https://images.unsplash.com/photo-1616627452901-0f2ce2bdbb2e?auto=format&fit=crop&w=500&q=80",
+  }
+];
+
+app.get('/api/products', (req, res) => {
+  res.json(products);
+});
+
+app.get('/api/products/:category', (req, res) => {
+  const category = req.params.category;
+  const filteredProducts = category === 'All' 
+    ? products 
+    : products.filter(p => p.category === category);
+  res.json(filteredProducts);
+});
+
 app.get("/api/message", (req, res) => {
   // return `text` to match frontend's `data.text` usage
   res.json({ text: "LeafX backend is running!" });

@@ -1,0 +1,206 @@
+import React, { useState } from "react";
+
+const products = [
+  {
+    id: 1,
+    name: "Solar-Powered Desk Lamp",
+    category: "Energy Efficiency",
+    price: 39.99,
+    description: "A sleek solar desk lamp that reduces electricity usage.",
+    image: "https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=500&q=60",
+  },
+  {
+    id: 2,
+    name: "Recycled Office Paper Pack",
+    category: "Office Supplies",
+    price: 12.5,
+    description: "100% post-consumer recycled A4 paper — eco-certified and chlorine-free.",
+    image: "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=500&q=60",
+  },
+  {
+    id: 3,
+    name: "Compostable Coffee Cups (Pack of 50)",
+    category: "Kitchen",
+    price: 18.0,
+    description: "Made from corn-based bioplastic — industrially compostable and durable.",
+    image: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=500&q=60",
+  },
+  {
+    id: 4,
+    name: "Bamboo Keyboard & Mouse Set",
+    category: "Electronics",
+    price: 59.99,
+    description: "Sustainably sourced bamboo design for modern eco-conscious offices.",
+    image: "https://images.unsplash.com/photo-1616627452901-0f2ce2bdbb2e?auto=format&fit=crop&w=500&q=80",
+  }
+];
+
+const categories = ["All", "Energy Efficiency", "Office Supplies", "Kitchen", "Electronics"];
+
+export default function Marketplace() {
+  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [cart, setCart] = useState([]);
+
+  const filteredProducts =
+    selectedCategory === "All"
+      ? products
+      : products.filter((p) => p.category === selectedCategory);
+
+  const addToCart = (product) => {
+    setCart([...cart, product]);
+  };
+
+  return (
+    <div style={{ padding: "3rem 2rem", backgroundColor: "#f8fff8" }}>
+      <h1 style={{ textAlign: "center", color: "green" }}>
+        🌿 Sustainable Marketplace
+      </h1>
+      <p style={{ textAlign: "center", color: "#444", marginTop: "0.5rem" }}>
+        Browse eco-friendly products designed for companies embracing sustainability.
+      </p>
+
+      {/* Category Buttons */}
+      <div style={{ display: "flex", justifyContent: "center", gap: "1rem", margin: "2rem 0" }}>
+        {categories.map((cat) => (
+          <button
+            key={cat}
+            onClick={() => setSelectedCategory(cat)}
+            style={{
+              backgroundColor: selectedCategory === cat ? "#a5d6a7" : "#e8f5e9",
+              border: "none",
+              padding: "0.5rem 1.2rem",
+              borderRadius: "20px",
+              fontWeight: "bold",
+              cursor: "pointer",
+            }}
+          >
+            {cat}
+          </button>
+        ))}
+      </div>
+
+      {/* Product Cards */}
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
+          gap: "2rem",
+          justifyContent: "center",
+        }}
+      >
+        {filteredProducts.map((item) => (
+          <div
+            key={item.id}
+            style={{
+              backgroundColor: "#fff",
+              padding: "1rem",
+              borderRadius: "10px",
+              boxShadow: "0 4px 10px rgba(0,0,0,0.1)",
+              textAlign: "center",
+              transition: "transform 0.2s ease",
+            }}
+            onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.03)")}
+            onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
+          >
+            <img
+              src={item.image}
+              alt={item.name}
+              style={{
+                width: "100%",
+                height: "180px",
+                objectFit: "cover",
+                borderRadius: "10px",
+              }}
+            />
+            <h3 style={{ marginTop: "1rem" }}>{item.name}</h3>
+            <p style={{ color: "green", fontWeight: "bold", margin: "0.5rem 0" }}>
+              {item.category}
+            </p>
+            <p style={{ color: "#555", fontSize: "0.9rem" }}>{item.description}</p>
+            <p style={{ fontWeight: "bold", marginTop: "0.5rem" }}>${item.price}</p>
+            <button
+              onClick={() => addToCart(item)}
+              style={{
+                backgroundColor: "green",
+                color: "white",
+                border: "none",
+                padding: "0.5rem 1rem",
+                borderRadius: "6px",
+                cursor: "pointer",
+              }}
+            >
+              Add to Cart
+            </button>
+          </div>
+        ))}
+      </div>
+
+      {/* Shopping Cart */}
+      {cart.length > 0 && (
+        <div style={{
+          position: "fixed",
+          bottom: "2rem",
+          right: "2rem",
+          backgroundColor: "white",
+          padding: "1rem",
+          borderRadius: "10px",
+          boxShadow: "0 4px 10px rgba(0,0,0,0.1)",
+          maxWidth: "300px"
+        }}>
+          <h3>Shopping Cart ({cart.length} items)</h3>
+          <div style={{ maxHeight: "200px", overflowY: "auto" }}>
+            {cart.map((item, index) => (
+              <div key={index} style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "0.5rem",
+                margin: "0.5rem 0",
+                padding: "0.5rem",
+                backgroundColor: "#f8fff8",
+                borderRadius: "5px"
+              }}>
+                <img
+                  src={item.image}
+                  alt={item.name}
+                  style={{
+                    width: "50px",
+                    height: "50px",
+                    objectFit: "cover",
+                    borderRadius: "5px"
+                  }}
+                />
+                <div>
+                  <p style={{ margin: 0, fontWeight: "bold" }}>{item.name}</p>
+                  <p style={{ margin: 0 }}>${item.price}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div style={{
+            borderTop: "1px solid #eee",
+            marginTop: "1rem",
+            paddingTop: "1rem"
+          }}>
+            <p style={{ fontWeight: "bold" }}>
+              Total: ${cart.reduce((sum, item) => sum + item.price, 0).toFixed(2)}
+            </p>
+            <button
+              onClick={() => alert("Checkout functionality coming soon!")}
+              style={{
+                backgroundColor: "green",
+                color: "white",
+                border: "none",
+                padding: "0.5rem 1rem",
+                borderRadius: "6px",
+                cursor: "pointer",
+                width: "100%"
+              }}
+            >
+              Checkout
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
