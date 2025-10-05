@@ -59,7 +59,8 @@ export default function FreeTierVoiceChat() {
         recognitionRef.current.stop();
       }
     };
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // processMessage is intentionally excluded to avoid recreation loop
 
   const processMessage = async (message) => {
     if (isProcessing) return;
