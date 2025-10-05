@@ -1,45 +1,33 @@
-import { useCallback, useEffect, useState } from "react";
+import { useAuth0 } from "@auth0/auth0-react";
+import { useEffect, useState } from "react";
 import './App.css';
-import LoadingButton from './components/LoadingButton';
-import './components/styles.css';
-import AuthPage from "./components/AuthPage";
-import Navbar from "./components/Navbar";
 import Home from "./components/Home";
-import Chatbot from "./components/Chatbot";
-import FreeTierVoiceChat from "./FreeTierVoiceChat";
-import "./components/styles.css";
+import Navbar from "./components/Navbar";
+import './components/styles.css';
 
 function App() {
-  const [user, setUser] = useState(null);
+  const [message, setMessage] = useState("");
+  const { loginWithRedirect, logout, isAuthenticated, user, isLoading } = useAuth0();
   const [currentView, setCurrentView] = useState('home');
-  const [loading, setLoading] = useState(true);
 
-  // Check for existing authentication on app load
   useEffect(() => {
-    const savedUser = localStorage.getItem('leafx_user');
-    if (savedUser) {
-      try {
-        setUser(JSON.parse(savedUser));
-      } catch (error) {
-        console.error('Error parsing saved user:', error);
-        localStorage.removeItem('leafx_user');
-      }
+    if (isAuthenticated) {
+      fetch("/api/message")
+        .then((res) => {
+          if (!res.ok) {
+            throw new Error(`HTTP error! Status: ${res.status}`);
+          }
+          return res.json();
+        })
+        .then((data) => setMessage(data.text))
+        .catch((error) => {
+          console.error("Error fetching data:", error);
+          setMessage("Failed to load message from backend 😢");
+        });
     }
-    setLoading(false);
-  }, []);
+  }, [isAuthenticated]);
 
-  const handleLogin = (userData) => {
-    setUser(userData);
-    setCurrentView('home');
-  };
-
-  const handleLogout = () => {
-    localStorage.removeItem('leafx_user');
-    setUser(null);
-    setCurrentView('home');
-  };
-
-  if (loading) {
+  if (isLoading) {
     return (
       <div style={{ 
         display: 'flex', 
@@ -53,42 +41,53 @@ function App() {
     );
   }
 
-  // Show authentication page if user is not logged in
-  if (!user) {
-    return <AuthPage onLogin={handleLogin} />;
+  if (!isAuthenticated) {
+    return (
+      <div className="login-viewport">
+        <div className="login-card">
+          <div className="bg-blobs">
+            <div className="blob b1" />
+            <div className="blob b2" />
+            <div className="blob b3" />
+          </div>
+          <div className="login-left">
+            <div className="brand-logo">LX</div>
+            <div className="left-title">LeafX — Build Fast, Ship Faster</div>
+            <div className="left-sub">A minimal, focused platform for prototype shipping and hackathon wins.</div>
+            <div className="feature-list">
+              <div className="feature-item"><div className="feature-dot" /> Instant prototypes</div>
+              <div className="feature-item"><div className="feature-dot" /> Great defaults for demos</div>
+              <div className="feature-item"><div className="feature-dot" /> Secure Auth powered by Auth0</div>
+            </div>
+          </div>
+          <div className="login-right">
+            <div>
+              <div className="signin-title">Welcome to LeafX</div>
+              <div className="signin-sub">Sign in to access your LeafX dashboard and demos.</div>
+            </div>
+            <div className="cta-wrap">
+              <button className="cta-btn" onClick={() => loginWithRedirect()}>
+                Continue with Auth0
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
   }
 
-  // Main app interface after authentication
   return (
     <div className="app">
       <Navbar 
         user={user} 
         currentView={currentView} 
         onViewChange={setCurrentView}
-        onLogout={handleLogout}
+        onLogout={() => logout({ returnTo: window.location.origin })}
       />
       
       <main style={{ paddingTop: '80px', minHeight: '100vh' }}>
-        {currentView === 'home' && <Home />}
+        {currentView === 'home' && <Home welcomeMessage={message} />}
         
-        {currentView === 'chat' && (
-          <div style={{ padding: '2rem', maxWidth: '1200px', margin: '0 auto' }}>
-            <h1 style={{ textAlign: 'center', marginBottom: '2rem' }}>
-              💬 Chat with LeafX AI
-            </h1>
-            <Chatbot />
-          </div>
-        )}
-        
-        {currentView === 'voice' && (
-          <div style={{ padding: '2rem', maxWidth: '1200px', margin: '0 auto' }}>
-            <h1 style={{ textAlign: 'center', marginBottom: '2rem' }}>
-              🎤 Voice Chat with Environmental Advisor
-            </h1>
-            <FreeTierVoiceChat />
-          </div>
-        )}
-
         {currentView === 'profile' && (
           <div style={{ padding: '2rem', maxWidth: '800px', margin: '0 auto', textAlign: 'center' }}>
             <h1>👤 Profile</h1>
@@ -100,11 +99,10 @@ function App() {
             }}>
               <h3>Welcome, {user.name}!</h3>
               <p><strong>Email:</strong> {user.email}</p>
-              <p><strong>Account Type:</strong> {user.provider === 'google' ? 'Google Account' : 'LeafX Account'}</p>
-              <p><strong>Member Since:</strong> {new Date().toLocaleDateString()}</p>
+              <p><strong>Account Type:</strong> {user.sub?.includes('auth0') ? 'Auth0' : 'Social'}</p>
               
               <button 
-                onClick={handleLogout}
+                onClick={() => logout({ returnTo: window.location.origin })}
                 style={{
                   marginTop: '1rem',
                   padding: '12px 24px',
