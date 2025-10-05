@@ -1,0 +1,104 @@
+{
+  "products": [
+    {
+      "sku": "PAPER-STD-80",
+      "name": "A4 Copy Paper 80gsm Standard",
+      "price": 5.20,
+      "category": "office_supplies",
+      "certs": [],
+      "recycled_pct": 0,
+      "co2e_per_unit": 1.05,
+      "lead_time_days": 1,
+      "moq": 10
+    },
+    {
+      "sku": "PAPER-RCY-100",
+      "name": "A4 Recycled Paper 100%",
+      "price": 4.80,
+      "category": "office_supplies", 
+      "certs": ["FSC Recycled", "EcoLogo"],
+      "recycled_pct": 100,
+      "co2e_per_unit": 0.72,
+      "lead_time_days": 2,
+      "moq": 10
+    },
+    {
+      "sku": "TOWEL-STD-2P",
+      "name": "Hand Towels 2-ply Standard",
+      "price": 24.50,
+      "category": "janitorial",
+      "certs": [],
+      "recycled_pct": 0,
+      "co2e_per_unit": 1.60,
+      "lead_time_days": 1,
+      "moq": 5
+    },
+    {
+      "sku": "TOWEL-REC-2P", 
+      "name": "Hand Towels 2-ply Recycled",
+      "price": 21.00,
+      "category": "janitorial",
+      "certs": ["EcoLogo", "Green Seal"],
+      "recycled_pct": 85,
+      "co2e_per_unit": 1.10,
+      "lead_time_days": 3,
+      "moq": 5
+    },
+    {
+      "sku": "PEN-STD-BLK",
+      "name": "Ballpoint Pens Black Standard",
+      "price": 12.00,
+      "category": "office_supplies",
+      "certs": [],
+      "recycled_pct": 0,
+      "co2e_per_unit": 0.85,
+      "lead_time_days": 1,
+      "moq": 12
+    },
+    {
+      "sku": "PEN-RCY-BLK",
+      "name": "Ballpoint Pens Black Recycled",
+      "price": 11.50,
+      "category": "office_supplies",
+      "certs": ["Recycled Content"],
+      "recycled_pct": 70,
+      "co2e_per_unit": 0.60,
+      "lead_time_days": 2,
+      "moq": 12
+    },
+    {
+      "sku": "CLEAN-STD-ALL",
+      "name": "All-Purpose Cleaner Standard",
+      "price": 8.75,
+      "category": "janitorial",
+      "certs": [],
+      "recycled_pct": 0,
+      "co2e_per_unit": 2.30,
+      "lead_time_days": 1,
+      "moq": 6
+    },
+    {
+      "sku": "CLEAN-ECO-ALL",
+      "name": "All-Purpose Cleaner Eco-Friendly",
+      "price": 9.25,
+      "category": "janitorial",
+      "certs": ["Green Seal", "EPA Safer Choice"],
+      "recycled_pct": 0,
+      "co2e_per_unit": 1.45,
+      "lead_time_days": 2,
+      "moq": 6
+  },
+  { "sku": "FOLDER-STD-LEGAL", "name": "Presentation Folder Standard", "price": 1.25, "category": "office_supplies", "certs": [], "recycled_pct": 0, "co2e_per_unit": 0.15, "lead_time_days": 3, "moq": 50 },
+  { "sku": "FOLDER-RCY-LEGAL", "name": "Presentation Folder Recycled", "price": 1.45, "category": "office_supplies", "certs": ["FSC Recycled", "Post-Consumer"], "recycled_pct": 75, "co2e_per_unit": 0.08, "lead_time_days": 5, "moq": 50 },
+  { "sku": "NOTE-STD-SPIRAL", "name": "Spiral Notebook Standard", "price": 3.50, "category": "office_supplies", "certs": [], "recycled_pct": 0, "co2e_per_unit": 0.45, "lead_time_days": 2, "moq": 25 },
+  { "sku": "NOTE-RCY-SPIRAL", "name": "Spiral Notebook Recycled Paper", "price": 4.20, "category": "office_supplies", "certs": ["FSC Recycled", "Post-Consumer"], "recycled_pct": 80, "co2e_per_unit": 0.30, "lead_time_days": 3, "moq": 25 },
+  { "sku": "CABLE-CAT6-STANDARD", "name": "Cat6 Ethernet Cable Standard PVC", "price": 2.10, "category": "it_hardware", "certs": [], "recycled_pct": 0, "co2e_per_unit": 0.40, "lead_time_days": 2, "moq": 25 },
+  { "sku": "CABLE-CAT6-RECYCLED", "name": "Cat6 Ethernet Cable Recycled Jacket", "price": 2.35, "category": "it_hardware", "certs": ["RoHS"], "recycled_pct": 35, "co2e_per_unit": 0.32, "lead_time_days": 3, "moq": 25 },
+  { "sku": "THERMAL-STD-SILVER", "name": "Thermal Compound Standard Silver", "price": 5.50, "category": "it_hardware", "certs": [], "recycled_pct": 0, "co2e_per_unit": 0.18, "lead_time_days": 3, "moq": 5 },
+  { "sku": "THERMAL-ECO-CERAMIC", "name": "Thermal Compound Ceramic Non-Toxic", "price": 6.25, "category": "it_hardware", "certs": ["Non-Toxic"], "recycled_pct": 10, "co2e_per_unit": 0.12, "lead_time_days": 5, "moq": 5 },
+  { "sku": "LABEL-STD-ASSET", "name": "Asset Tracking Labels Standard", "price": 0.08, "category": "it_supplies", "certs": [], "recycled_pct": 0, "co2e_per_unit": 0.01, "lead_time_days": 4, "moq": 500 },
+  { "sku": "LABEL-ECO-RECYCLED", "name": "Asset Labels Recycled PET Tamper Evident", "price": 0.11, "category": "it_supplies", "certs": ["Recycled Content"], "recycled_pct": 50, "co2e_per_unit": 0.007, "lead_time_days": 6, "moq": 500 },
+  { "sku": "ESD-WRIST-STD", "name": "ESD Wrist Strap Adjustable", "price": 3.20, "category": "it_hardware", "certs": ["IEC 61340"], "recycled_pct": 0, "co2e_per_unit": 0.05, "lead_time_days": 2, "moq": 10 },
+  { "sku": "ESD-WRIST-ECO", "name": "ESD Wrist Strap Recycled Fiber", "price": 3.80, "category": "it_hardware", "certs": ["IEC 61340", "Recycled Content"], "recycled_pct": 40, "co2e_per_unit": 0.038, "lead_time_days": 4, "moq": 10 }
+  ]
+}

@@ -1,0 +1,200 @@
+import React from "react";
+import { useNavigate } from "react-router-dom";
+
+export default function Home() {
+  const navigate = useNavigate();
+
+  return (
+    <div style={styles.container}>
+      <div style={styles.hero}>
+        <div style={styles.overlay}>
+          <h1 style={styles.title}>
+            <span style={styles.highlight}>Empowering</span> Sustainable Business Transformation
+          </h1>
+          <p style={styles.subtitle}>
+            Your AI-Powered Partner in Environmental Excellence
+          </p>
+        </div>
+      </div>
+
+      <div style={styles.missionSection}>
+        <div style={styles.missionContent}>
+          <h2 style={styles.sectionTitle}>
+            <span style={styles.icon}>🌍</span> Our Mission
+          </h2>
+          
+          <div style={styles.card}>
+            <div style={styles.problemSection}>
+              <h3 style={styles.cardTitle}>The Challenge</h3>
+              <p style={styles.cardText}>
+                Companies want to "go sustainable," but they don't know{" "}
+                <span style={styles.emphasis}>how to start</span>,{" "}
+                <span style={styles.emphasis}>what data to track</span>, or{" "}
+                <span style={styles.emphasis}>how to report progress</span>{" "}
+                without greenwashing.
+              </p>
+            </div>
+
+            <div style={styles.divider}></div>
+
+            <div style={styles.solutionSection}>
+              <h3 style={styles.cardTitle}>Our Solution</h3>
+              <p style={styles.cardText}>
+                A comprehensive sustainability assistant powered by AI that helps enterprises:
+                <span style={styles.emphasisList}>
+                  <span>✓ Assess their environmental impact</span>
+                  <span>✓ Plan actionable sustainability strategies</span>
+                  <span>✓ Execute and track meaningful progress</span>
+                </span>
+              </p>
+            </div>
+          </div>
+
+          <div style={styles.ctaSection}>
+            <button 
+              onClick={() => navigate('/chat')} 
+              style={styles.chatButton}
+            >
+              Start Your Sustainability Journey 🌱
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+const styles = {
+  container: {
+    minHeight: '100vh',
+    backgroundColor: '#ffffff',
+  },
+  hero: {
+    height: '60vh',
+    backgroundImage: 'url("https://images.unsplash.com/photo-1451187863213-d1bcbaae3fa3?auto=format&fit=crop&q=80")',
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    position: 'relative',
+  },
+  overlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: '2rem',
+    textAlign: 'center',
+  },
+  title: {
+    color: '#ffffff',
+    fontSize: '3.5rem',
+    fontWeight: '700',
+    marginBottom: '1.5rem',
+    maxWidth: '800px',
+    lineHeight: 1.2,
+    textShadow: '2px 2px 4px rgba(0,0,0,0.3)',
+  },
+  highlight: {
+    color: '#4ade80',
+  },
+  subtitle: {
+    color: '#ffffff',
+    fontSize: '1.5rem',
+    fontWeight: '400',
+    maxWidth: '600px',
+    textShadow: '1px 1px 2px rgba(0,0,0,0.3)',
+  },
+  missionSection: {
+    padding: '4rem 2rem',
+    backgroundColor: '#f8faf8',
+  },
+  missionContent: {
+    maxWidth: '1200px',
+    margin: '0 auto',
+  },
+  sectionTitle: {
+    fontSize: '2.5rem',
+    color: '#1a1a1a',
+    textAlign: 'center',
+    marginBottom: '3rem',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: '1rem',
+  },
+  icon: {
+    fontSize: '2.5rem',
+  },
+  card: {
+    backgroundColor: '#ffffff',
+    borderRadius: '16px',
+    padding: '3rem',
+    boxShadow: '0 4px 6px rgba(0, 0, 0, 0.05)',
+    maxWidth: '900px',
+    margin: '0 auto',
+    display: 'flex',
+    gap: '3rem',
+  },
+  problemSection: {
+    flex: 1,
+  },
+  solutionSection: {
+    flex: 1,
+  },
+  divider: {
+    width: '2px',
+    backgroundColor: '#e5e7eb',
+  },
+  cardTitle: {
+    fontSize: '1.5rem',
+    color: '#2ecc71',
+    marginBottom: '1.5rem',
+    fontWeight: '600',
+  },
+  cardText: {
+    fontSize: '1.1rem',
+    color: '#4b5563',
+    lineHeight: 1.6,
+  },
+  emphasis: {
+    color: '#2ecc71',
+    fontWeight: '500',
+  },
+  emphasisList: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '0.75rem',
+    marginTop: '1rem',
+    color: '#4b5563',
+  },
+  ctaSection: {
+    marginTop: '4rem',
+    textAlign: 'center',
+  },
+  chatButton: {
+    padding: '1rem 2rem',
+    fontSize: '1.1rem',
+    backgroundColor: '#2ecc71',
+    color: '#ffffff',
+    border: 'none',
+    borderRadius: '8px',
+    cursor: 'pointer',
+    fontWeight: '600',
+    transition: 'all 0.3s ease',
+    boxShadow: '0 2px 4px rgba(46, 204, 113, 0.2)',
+    '&:hover': {
+      backgroundColor: '#27ae60',
+      transform: 'translateY(-2px)',
+      boxShadow: '0 4px 6px rgba(46, 204, 113, 0.3)',
+    },
+    '&:active': {
+      transform: 'translateY(0)',
+      boxShadow: '0 2px 4px rgba(46, 204, 113, 0.1)',
+    },
+  },
+};

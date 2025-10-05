@@ -1,0 +1,103 @@
+FACILITIES MAINTENANCE SUPPLY ORDER
+===================================
+
+Department: Facilities & Operations
+Order Date: October 5, 2025
+Facility Manager: Maria Rodriguez
+Location: Corporate Headquarters - Building A
+PO Reference: FAC-2025-1005
+
+MONTHLY MAINTENANCE SUPPLIES:
+
+1. Toilet Paper (Commercial Grade)
+   Quantity: 144 rolls
+   Specification: 2-ply, 1000 sheets per roll
+   Coverage: All office restrooms (8 locations)
+   
+2. Paper Towels (C-Fold)
+   Quantity: 72 cases
+   Type: White, absorbent, commercial grade
+   Dispensers: 24 locations throughout building
+   
+3. Hand Soap Refills
+   Quantity: 36 cartridges
+   Type: Antibacterial foam soap
+   Dispenser Type: 1200ml cartridge system
+   
+4. Trash Bags (Heavy Duty)
+   Quantity: 500 bags
+   Size: 55-gallon, black
+   Thickness: 1.5 mil minimum
+   
+5. Floor Cleaner Concentrate
+   Quantity: 12 gallons
+   Type: All-purpose floor cleaner
+   Coverage: 45,000 sq ft facility
+   
+6. Window Cleaner
+   Quantity: 24 bottles
+   Size: 32 oz spray bottles
+   Application: Interior and exterior windows
+   
+7. Disinfectant Wipes
+   Quantity: 48 containers
+   Count: 80 wipes per container
+   Usage: High-touch surfaces, desks, door handles
+   
+8. Air Fresheners
+   Quantity: 30 units
+   Type: Automatic spray dispensers
+   Scent: Fresh linen or neutral
+   
+9. Light Bulbs (LED)
+   Quantity: 100 bulbs
+   Specification: 60W equivalent, daylight (5000K)
+   Base: Standard E26 screw base
+
+ENVIRONMENTAL PREFERENCES:
+- Green Seal or EPA Safer Choice certified cleaners
+- Recycled content paper products minimum 30%
+- Low VOC (Volatile Organic Compounds) formulations
+- Concentrated products to reduce packaging waste
+- Biodegradable materials where available
+
+DELIVERY REQUIREMENTS:
+- Delivery window: 8:00 AM - 4:00 PM weekdays only
+- Loading dock access required for large orders
+- 48-hour advance notice for delivery scheduling
+- Contact security for building access: (555) 123-9999
+
+BUDGET INFORMATION:
+- Monthly allocation: $3,200
+- Annual contract pricing preferred
+- Volume discounts applicable for orders >$500
+- Net 30 payment terms
+
+QUALITY STANDARDS:
+- All products must meet OSHA safety requirements
+- SDS (Safety Data Sheets) required for all chemicals
+- Products must be compatible with existing dispensers
+- Bulk packaging preferred to reduce waste
+
+VENDOR REQUIREMENTS:
+- Licensed and insured suppliers only
+- Sustainability reporting capabilities preferred
+- Local suppliers given preference when possible
+- References from similar commercial facilities required
+
+EMERGENCY CONTACT:
+Maria Rodriguez - maria.rodriguez@company.com
+Office: (555) 456-7890
+Emergency: (555) 456-7891
+After Hours: (555) 999-0000
+
+APPROVAL CHAIN:
+Facility Manager: Maria Rodriguez ✓
+Operations Director: Tom Wilson
+Procurement: Lisa Chang  
+Finance Controller: Robert Kim
+
+---
+Document prepared by: Facilities Management System
+Last updated: October 5, 2025 @ 3:45 PM EST
+Next review date: November 5, 2025
