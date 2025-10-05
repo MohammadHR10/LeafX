@@ -1,0 +1,9 @@
+sku,site,on_hand,reorder_pt
+PAPER-STD-80,warehouse_a,1200,100
+PAPER-RCY-100,warehouse_a,800,100
+TOWEL-STD-2P,warehouse_b,150,20
+TOWEL-REC-2P,warehouse_b,90,20
+PEN-STD-BLK,warehouse_a,300,50
+PEN-RCY-BLK,warehouse_a,180,50
+CLEAN-STD-ALL,warehouse_b,60,10
+CLEAN-ECO-ALL,warehouse_b,45,10
