@@ -39,7 +39,7 @@ function App() {
             fontSize: "16px"
           }}
         >
-          {showVoiceChat ? "Hide Expert Advisor" : "🧠 Talk to AI Expert Advisor"}
+          {showVoiceChat ? "Hide Voice Chat" : "🎤 Try ElevenLabs Free Tier Voice AI"}
         </button>
       </div>
 
