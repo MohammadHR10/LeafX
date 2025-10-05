@@ -45,10 +45,12 @@ app.post("/api/eleven/tts", async (req, res) => {
         },
         body: JSON.stringify({
           text: text,
-          model_id: "eleven_monolingual_v1",
+          model_id: "eleven_turbo_v2", // Turbo v2 for creator plan
           voice_settings: {
-            stability: 0.5,
-            similarity_boost: 0.5
+            stability: 0.71,
+            similarity_boost: 0.5,
+            style: 0.0,
+            use_speaker_boost: true
           }
         })
       }
