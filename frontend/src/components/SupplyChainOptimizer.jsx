@@ -1,5 +1,5 @@
 // src/components/SupplyChainOptimizer.jsx
-import React, { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import './SupplyChainOptimizer.css';
 
 const SupplyChainOptimizer = () => {
@@ -63,15 +63,16 @@ const SupplyChainOptimizer = () => {
     const file = event.target.files[0];
     if (!file) return;
 
-    console.log('File selected:', file.name);
+    console.log('📁 File selected:', file.name, 'Type:', file.type, 'Size:', file.size);
     setLoading(true);
+    
     try {
       // Read the actual file content
       const fileContent = await readFileContent(file);
-      console.log('File content:', fileContent.substring(0, 200) + '...');
+      console.log('📄 File content preview:', fileContent.substring(0, 200) + '...');
       
-      console.log('Sending to backend...');
-      const response = await fetch('http://localhost:5001/api/mcp/upload-pdf', {
+      console.log('🚀 Sending to backend /api/mcp/upload-pdf...');
+      const response = await fetch('/api/mcp/upload-pdf', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
@@ -80,12 +81,17 @@ const SupplyChainOptimizer = () => {
         })
       });
 
-      console.log('Backend response status:', response.status);
-      const data = await response.json();
-      console.log('Backend response data:', data);
+      console.log('📡 Backend response status:', response.status);
       
-      if (data.success) {
-        console.log('Setting extracted items:', data.line_items);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      console.log('✅ Backend response data:', data);
+      
+      if (data.success && data.line_items) {
+        console.log('🎯 Setting extracted items:', data.line_items);
         setExtractedItems(data.line_items);
         setAlternatives([]); // Clear previous alternatives
         setSelectedItems([]); // Clear previous selections
@@ -93,9 +99,12 @@ const SupplyChainOptimizer = () => {
         setQuote(null); // Clear previous quote
         setExtractedSource(data.extracted_from || '');
         setStep('alternatives');
+      } else {
+        throw new Error('Invalid response format or no items extracted');
       }
     } catch (error) {
-      console.error('Upload error:', error);
+      console.error('❌ Upload error:', error);
+      alert(`Error uploading file: ${error.message}. Please try again.`);
     } finally {
       setLoading(false);
     }
@@ -103,25 +112,34 @@ const SupplyChainOptimizer = () => {
 
   // Step 2: Find sustainable alternatives
   const findAlternatives = async () => {
-    console.log('Finding alternatives for items:', extractedItems);
+    console.log('🔍 Finding alternatives for items:', extractedItems);
     setLoading(true);
+    
     try {
-      const response = await fetch('http://localhost:5001/api/mcp/find-alternatives', {
+      const response = await fetch('/api/mcp/find-alternatives', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ items: extractedItems })
       });
 
-      console.log('Alternatives response status:', response.status);
-      const data = await response.json();
-      console.log('Alternatives response data:', data);
+      console.log('📡 Alternatives response status:', response.status);
       
-      if (data.success) {
-        console.log('Setting alternatives:', data.items);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      console.log('✅ Alternatives response data:', data);
+      
+      if (data.success && data.items) {
+        console.log('🌱 Setting alternatives:', data.items);
         setAlternatives(data.items);
+      } else {
+        throw new Error('No alternatives found or invalid response format');
       }
     } catch (error) {
-      console.error('Alternatives error:', error);
+      console.error('❌ Alternatives error:', error);
+      alert(`Error finding alternatives: ${error.message}. Please try again.`);
     } finally {
       setLoading(false);
     }
@@ -155,7 +173,7 @@ const SupplyChainOptimizer = () => {
 
     setLoading(true);
     try {
-      const response = await fetch('http://localhost:5001/api/mcp/create-order', {
+      const response = await fetch('/api/mcp/create-order', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ selectedItems })
@@ -179,7 +197,7 @@ const SupplyChainOptimizer = () => {
 
     setLoading(true);
     try {
-      const response = await fetch('http://localhost:5001/api/mcp/generate-quote', {
+      const response = await fetch('/api/mcp/generate-quote', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ po_id: order.po_id, orderData: order })
@@ -205,7 +223,7 @@ const SupplyChainOptimizer = () => {
     try {
       const text = `Procurement optimization complete. ${quoteData.sustainability_highlights.co2e_reduction}. ${quoteData.sustainability_highlights.cost_impact}. Sustainability score: ${quoteData.sustainability_highlights.sustainability_score}. Order ready for approval.`;
       
-      const response = await fetch('http://localhost:5001/api/tts', {
+      const response = await fetch('/api/eleven/tts', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ text })

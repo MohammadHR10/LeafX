@@ -1,23 +1,62 @@
-// server.js (ESM)
-import cors from "cors";
-import express from "express";
-import dotenv from "dotenv";
+// LeafX Server - Professional Environmental AI Platform
+// Modern Node.js/Express Server with Enterprise-Grade Features
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import compression from "compression";
+import cors from "cors";
+import dotenv from "dotenv";
+import express from "express";
+import rateLimit from "express-rate-limit";
+import helmet from "helmet";
 import SupplyChainMCPService from './services/supplyChainMCP.js';
 
+// Load environment variables
 dotenv.config();
 
+// Server Configuration
 const app = express();
-const PORT = process.env.PORT || 5001; // use 5001 to avoid macOS system service on 5000
+const PORT = process.env.PORT || 5001;
+const NODE_ENV = process.env.NODE_ENV || 'development';
 
-// Initialize Gemini AI
+// Initialize Services
 const genAI = process.env.GEMINI_API_KEY ? new GoogleGenerativeAI(process.env.GEMINI_API_KEY) : null;
-
-// Initialize Supply Chain MCP Service
 const mcpService = new SupplyChainMCPService();
 
-app.use(cors()); // allow cross-origin requests
-app.use(express.json());
+// Professional Logging
+const logger = {
+  info: (message, data = {}) => console.log(`ℹ️  [${new Date().toISOString()}] ${message}`, data),
+  error: (message, error = {}) => console.error(`❌ [${new Date().toISOString()}] ${message}`, error),
+  warn: (message, data = {}) => console.warn(`⚠️  [${new Date().toISOString()}] ${message}`, data),
+  success: (message, data = {}) => console.log(`✅ [${new Date().toISOString()}] ${message}`, data)
+};
+
+// Enterprise Middleware Stack
+app.use(helmet()); // Security headers
+app.use(compression()); // Gzip compression
+
+// Rate limiting for API protection
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: NODE_ENV === 'production' ? 100 : 1000, // Limit requests per windowMs
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Too many requests, please try again later' }
+});
+
+app.use('/api/', limiter);
+
+// CORS Configuration
+app.use(cors({
+  origin: NODE_ENV === 'production' 
+    ? ['https://leafx.vercel.app', 'https://your-domain.com']
+    : ['http://localhost:3000', 'http://localhost:3001'],
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
+}));
+
+// Body parsing with size limits
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
 // Marketplace routes
 const products = [
@@ -74,7 +113,7 @@ app.get("/api/message", (req, res) => {
 
 // Alternative Text-to-Speech endpoint for testing (doesn't require ConvAI permissions)
 app.post("/api/eleven/tts", async (req, res) => {
-  const { text, voice_id = "21m00Tcm4TlvDq8ikWAM" } = req.body; // Default to Rachel voice
+  const { text, voice_id = "pNInz6obpgDQGcFmaJgB" } = req.body; // Default to Adam (male) voice
   const XI_KEY = process.env.ELEVEN_API_KEY;
 
   if (!XI_KEY) {
@@ -97,11 +136,11 @@ app.post("/api/eleven/tts", async (req, res) => {
         },
         body: JSON.stringify({
           text: text,
-          model_id: "eleven_turbo_v2", // Turbo v2 for creator plan
+          model_id: "eleven_turbo_v2", // Proven working Turbo v2 for pro users
           voice_settings: {
-            stability: 0.71,
-            similarity_boost: 0.5,
-            style: 0.0,
+            stability: 0.85,
+            similarity_boost: 0.8,
+            style: 0.2,
             use_speaker_boost: true
           }
         })
@@ -124,9 +163,9 @@ app.post("/api/eleven/tts", async (req, res) => {
   }
 });
 
-// ElevenLabs Text-to-Speech endpoint (works with free tier)
+// ElevenLabs Text-to-Speech endpoint (Pro features enabled)
 app.post("/api/eleven/text-to-speech", async (req, res) => {
-  const { text, voice_id = "21m00Tcm4TlvDq8ikWAM" } = req.body; // Default to Rachel voice
+  const { text, voice_id = "pNInz6obpgDQGcFmaJgB" } = req.body; // Default to Adam (male) voice
   const XI_KEY = process.env.ELEVEN_API_KEY;
 
   if (!XI_KEY) {
@@ -149,10 +188,12 @@ app.post("/api/eleven/text-to-speech", async (req, res) => {
         },
         body: JSON.stringify({
           text: text,
-          model_id: "eleven_monolingual_v1",
+          model_id: "eleven_turbo_v2", // Pro model for enhanced quality
           voice_settings: {
-            stability: 0.5,
-            similarity_boost: 0.5
+            stability: 0.85,
+            similarity_boost: 0.8,
+            style: 0.2,
+            use_speaker_boost: true
           }
         })
       }
@@ -200,9 +241,9 @@ app.get("/api/eleven/voices", async (req, res) => {
   }
 });
 
-// ElevenLabs Text-to-Speech endpoint (Free tier compatible)
+// ElevenLabs Text-to-Speech endpoint (Pro tier enabled) - Male Voice
 app.post("/api/eleven/tts", async (req, res) => {
-  const { text, voice_id = "21m00Tcm4TlvDq8ikWAM" } = req.body; // Default voice: Rachel
+  const { text, voice_id = "pNInz6obpgDQGcFmaJgB" } = req.body; // Default voice: Adam (male)
   const XI_KEY = process.env.ELEVEN_API_KEY;
 
   if (!XI_KEY) {
@@ -225,10 +266,12 @@ app.post("/api/eleven/tts", async (req, res) => {
         },
         body: JSON.stringify({
           text: text,
-          model_id: "eleven_monolingual_v1",
+          model_id: "eleven_turbo_v2", // Pro model with premium quality
           voice_settings: {
-            stability: 0.5,
-            similarity_boost: 0.5
+            stability: 0.85,
+            similarity_boost: 0.8,
+            style: 0.2,
+            use_speaker_boost: true
           }
         })
       }
@@ -270,9 +313,14 @@ app.post("/api/gemini", async (req, res) => {
       // Use real Gemini AI
       const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
       
-      const enhancedPrompt = `You are LeafX, an expert environmental and sustainability AI assistant. 
-You provide practical, actionable advice on sustainable living, environmental protection, and eco-friendly practices.
-Be concise but informative, friendly but professional. Focus on actionable steps the user can take.
+      const enhancedPrompt = `You are a professional environmental expert specializing in sustainable eco-friendly products and practices. 
+Provide concise, actionable advice focusing on:
+- Sustainable product recommendations
+- Eco-friendly alternatives
+- Environmental impact reduction
+- Green living solutions
+
+Keep responses brief (2-3 sentences max) and product-focused.
 
 User question: ${prompt}
 
@@ -302,15 +350,15 @@ function generateEnhancedGeminiResponse(prompt) {
   const lowerPrompt = prompt.toLowerCase();
   
   if (lowerPrompt.includes('sustainability') || lowerPrompt.includes('environmental')) {
-    return "🌱 Great question about sustainability! Here are some actionable steps: 1) Start with energy efficiency (LED lights, smart thermostats), 2) Reduce waste through composting and recycling, 3) Choose sustainable transportation options, and 4) Support eco-friendly products. Small changes make a big impact!";
+    return "🌱 I recommend these eco-friendly product swaps: LED bulbs for energy efficiency, bamboo alternatives for plastic items, and certified sustainable brands. Focus on products with minimal packaging and recyclable materials.";
   }
   
   if (lowerPrompt.includes('carbon') || lowerPrompt.includes('emissions')) {
-    return "🌍 To reduce carbon emissions: Switch to renewable energy, improve home insulation, use public transport or electric vehicles, eat more plant-based meals, and support companies with strong climate commitments. Every action counts!";
+    return "🌍 Choose renewable energy providers, energy-efficient appliances (ENERGY STAR certified), and carbon-neutral shipping options. Electric vehicles and plant-based products significantly reduce your carbon footprint.";
   }
   
   if (lowerPrompt.includes('waste') || lowerPrompt.includes('recycling')) {
-    return "♻️ Waste reduction tips: Follow the 3 R's (Reduce, Reuse, Recycle), compost organic waste, buy products with minimal packaging, repair instead of replacing, and donate items you no longer need. Aim for zero waste gradually!";
+    return "♻️ Use reusable products: stainless steel water bottles, glass food containers, and compostable bags. Choose brands with minimal, recyclable packaging and repair services.";
   }
   
   if (lowerPrompt.includes('energy') || lowerPrompt.includes('electricity')) {
@@ -322,7 +370,7 @@ function generateEnhancedGeminiResponse(prompt) {
   }
   
   // Default response for general sustainability questions
-  return "🌿 LeafX here! I'm your sustainability assistant. I can help you with eco-friendly practices, carbon reduction, waste management, energy efficiency, and sustainable living tips. What specific area would you like to explore?";
+  return "🌿 I'm your environmental product specialist. I recommend sustainable alternatives, eco-friendly brands, and green products that reduce environmental impact. What specific product or area interests you?";
 }
 
 // AI Expert Advisor endpoint
@@ -338,16 +386,14 @@ app.post("/api/chat", async (req, res) => {
       // Use real Gemini AI for voice chat
       const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
       
-      const enhancedPrompt = `You are LeafX, an expert environmental and sustainability AI assistant with deep knowledge across all domains. 
-When someone asks you a question, respond as their go-to expert consultant in that domain. 
+      const enhancedPrompt = `You are a professional environmental expert specializing in sustainable eco-friendly products.
 
-Key guidelines:
-- Be precise and actionable in your responses
-- Focus on practical steps they can take immediately
-- Keep responses conversational but informative (ideal for voice interaction)
-- If it's about sustainability/environment, give specific actionable advice
-- If it's about other topics, still maintain expertise but relate back to sustainability when relevant
-- Keep responses under 3 sentences for voice interaction
+Guidelines:
+- Focus on sustainable product recommendations and eco-friendly alternatives
+- Give specific, actionable advice for environmental impact reduction
+- Keep responses under 2 sentences for voice interaction
+- Always recommend specific eco-friendly products or practices
+- Be concise and professional
 
 User message: ${message}
 
@@ -378,12 +424,12 @@ function generateEnhancedExpertResponse(userMessage) {
   
   // Food & Waste
   if (lowerMessage.match(/\b(food|waste|composting|kitchen|leftovers|grocery|organic|spoilage|meal|cooking)\b/)) {
-    return `For food waste: Plan meals weekly, store produce properly (bananas separate, greens in damp towels), use FIFO method, compost scraps, and repurpose leftovers within 48 hours. Start tracking what you throw away for one week.`;
+    return `Use glass storage containers, beeswax wraps instead of plastic, and countertop composters. Buy from zero-waste grocery stores and choose products with compostable packaging.`;
   }
   
   // Energy & Carbon
   else if (lowerMessage.match(/\b(energy|electricity|carbon|emissions|solar|renewable|heating|cooling|insulation)\b/)) {
-    return `Energy efficiency: LED bulbs, programmable thermostat, seal air leaks, unplug devices when not in use. Switch to renewable energy provider if available. Biggest impact: heating/cooling optimization and appliance upgrades.`;
+    return `Install smart thermostats, ENERGY STAR appliances, and solar panels. Use smart power strips and choose renewable energy providers like Green Mountain Energy or Arcadia Power.`;
   }
   
   // Transportation
@@ -554,16 +600,98 @@ app.get('/api/mcp/products', async (req, res) => {
   }
 });
 
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+// Health Check Endpoint
+app.get('/health', (req, res) => {
+  res.status(200).json({
+    status: 'healthy',
+    timestamp: new Date().toISOString(),
+    uptime: process.uptime(),
+    version: '2.0.0',
+    environment: NODE_ENV,
+    services: {
+      gemini: !!genAI,
+      elevenlabs: !!process.env.ELEVEN_API_KEY,
+      mcp: !!mcpService
+    }
+  });
 });
 
-process.on("uncaughtException", (err) => {
-  console.error("Uncaught exception:", err);
+// API Documentation Endpoint
+app.get('/api', (req, res) => {
+  res.json({
+    name: 'LeafX Environmental AI API',
+    version: '2.0.0',
+    description: 'Professional environmental expert AI platform with voice interaction',
+    endpoints: {
+      'GET /health': 'Server health check',
+      'GET /api/products': 'Get all sustainable products',
+      'POST /api/chat': 'AI environmental expert chat',
+      'POST /api/eleven/tts': 'Text-to-speech conversion',
+      'GET /api/eleven/voices': 'Available voices',
+      'POST /api/mcp/upload-pdf': 'Upload and extract procurement documents',
+      'POST /api/mcp/find-alternatives': 'Find sustainable alternatives'
+    },
+    documentation: 'https://github.com/MohammadHR10/LeafX',
+    support: 'Environmental sustainability AI assistance'
+  });
+});
+
+// Global Error Handler
+app.use((err, req, res, next) => {
+  logger.error('Unhandled error:', err);
+  res.status(500).json({
+    error: 'Internal server error',
+    message: NODE_ENV === 'development' ? err.message : 'Something went wrong',
+    timestamp: new Date().toISOString()
+  });
+});
+
+// 404 Handler
+app.use((req, res) => {
+  res.status(404).json({
+    error: 'Endpoint not found',
+    message: `The endpoint ${req.method} ${req.originalUrl} does not exist`,
+    availableEndpoints: ['/api', '/health', '/api/products', '/api/chat']
+  });
+});
+
+// Graceful Server Startup
+const server = app.listen(PORT, () => {
+  logger.success(`🌿 LeafX Server started successfully!`);
+  logger.info(`🚀 Environment: ${NODE_ENV}`);
+  logger.info(`🌐 Server URL: http://localhost:${PORT}`);
+  logger.info(`📋 Health Check: http://localhost:${PORT}/health`);
+  logger.info(`📚 API Docs: http://localhost:${PORT}/api`);
+  logger.info(`🔑 Gemini AI: ${genAI ? '✅ Connected' : '❌ Not configured'}`);
+  logger.info(`🎤 ElevenLabs: ${process.env.ELEVEN_API_KEY ? '✅ Connected' : '❌ Not configured'}`);
+  console.log('================================');
+});
+
+// Graceful Shutdown Handling
+const gracefulShutdown = (signal) => {
+  logger.info(`Received ${signal}, shutting down gracefully...`);
+  server.close(() => {
+    logger.success('Server closed successfully');
+    process.exit(0);
+  });
+  
+  // Force close after 10 seconds
+  setTimeout(() => {
+    logger.error('Could not close connections in time, forcefully shutting down');
+    process.exit(1);
+  }, 10000);
+};
+
+// Enhanced Error Handling
+process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
+process.on('SIGINT', () => gracefulShutdown('SIGINT'));
+
+process.on('uncaughtException', (err) => {
+  logger.error('Uncaught Exception - Server will restart:', err);
   process.exit(1);
 });
 
-process.on("unhandledRejection", (reason) => {
-  console.error("Unhandled rejection:", reason);
+process.on('unhandledRejection', (reason, promise) => {
+  logger.error('Unhandled Rejection at:', promise, 'reason:', reason);
   process.exit(1);
 });
